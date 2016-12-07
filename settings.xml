@@ -1,0 +1,159 @@
+<!-- | This is the maven configuration file for Extenda that is used to | define access to our repository. Check out the maven home page | for documentation on how this configuration file works. | -->
+<settings>
+    <!-- localRepository | This is where all downloaded artifacts will be cached on your local harddrive. | You can customize this location if you want: | -->
+    <localRepository>/root/.m2/repository</localRepository>
+
+    <proxies>
+    </proxies>
+    <!-- servers | This is the authentication used when deploying artifacts to the internal extenda repository: | -->
+    <servers>
+        <server>
+            <id>remote-repository</id>
+            <username>deployment</username>
+            <password>deployment123</password>
+        </server>
+    </servers>
+
+   <!-- mirrors
+   | We use a mirror for the central repository to direct all repository access to our internal
+   | extenda repository:
+   |-->
+	<mirrors>
+
+	  <!-- These are some extra mirrors for repositories that may be listed in certain
+	       third-party pom.xml:s, like mule (these are proxied, but not included in our main public group): -->
+	  <mirror>
+	    <id>codehaus-proxy</id>
+	    <url>http://repository/nexus/content/repositories/codehaus</url>
+	    <mirrorOf>codehaus</mirrorOf>
+	  </mirror>
+	  <mirror>
+	    <id>java-net-proxy</id>
+	    <url>http://repository/nexus/content/repositories/javanetm2</url>
+	    <mirrorOf>java-net</mirrorOf>
+	  </mirror>
+	  <mirror>
+	    <id>public-jboss-proxy</id>
+	    <url>http://repository/nexus/content/repositories/public-jboss</url>
+	    <mirrorOf>public-jboss</mirrorOf>
+	  </mirror>
+	  <mirror>
+	    <id>mule-deps-proxy</id>
+	    <url>http://repository/nexus/content/repositories/mule-deps</url>
+	    <mirrorOf>mule-deps</mirrorOf>
+	  </mirror>	  
+	  <mirror>
+		<id>mulesoft-releases-proxy</id>
+		<url>http://repository/nexus/content/repositories/mulesoft-releases</url>
+		<mirrorOf>mulesoft-releases</mirrorOf>
+	  </mirror>
+
+         <!-- gilead stuff -->
+	  <mirror>
+		<id>jboss-proxy</id>
+		<url>http://repository.jboss.org/nexus/content/repositories/deprecated</url>
+		<mirrorOf>jboss</mirrorOf>
+	  </mirror>
+
+	  
+	  <!-- This is the main mirror for the maven central repo. It is a group which also hosts
+	     our internal artifacts, and some other repositories. By mirroring * we prevent
+         direct access to repos not in our proxy. -->
+	  <mirror>
+	    <id>local-proxy</id>
+	    <url>http://repository/nexus/content/groups/public</url>
+	    <mirrorOf>*</mirrorOf>
+	  </mirror>
+	  
+	</mirrors>
+
+    <!-- profiles | We use a single profile for everything. This profile contains some custom extenda | settings for our internal extenda repository. | -->
+    <profiles>
+        <profile>
+            <id>alwaysOn</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                        <updatePolicy>daily</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </snapshots>
+                    <url>http://repository/nexus/content/groups/public</url>
+                    <layout>default</layout>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central</id>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                        <updatePolicy>daily</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </snapshots>
+                    <url>http://repository/nexus/content/groups/public</url>
+                    <layout>default</layout>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+
+        <profile>
+            <id>isc</id>
+            <properties>
+                <isc.username>YOUR_SMARTCLIENT_USERNAME</isc.username>
+                <isc.password>YOUR_SMARTCLIENT_PASSWORD</isc.password>
+                <license>LGPL</license>
+                <analytics>false</analytics>
+                <messaging>false</messaging>
+                <repository.id>remote-repository</repository.id>
+                <repository.url>http://repository/nexus/content/repositories/thirdparty</repository.url>
+            </properties>
+
+            <!-- temporary configuration providing access to staging repo -->
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>sonatype-staging</id>
+                    <name>Sonatype Staged Releases</name>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <url>https://oss.sonatype.org/content/repositories/comgooglecodesmartgwt-maven-plugin-270/</url>
+                    <layout>default</layout>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>sonatype-snapshots</id>
+                    <name>Sonatype Release Snapshots</name>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                    <layout>default</layout>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+    <pluginGroups>
+        <pluginGroup>com.googlecode.smartgwt-maven-plugin</pluginGroup>
+    </pluginGroups>
+    
+    <activeProfiles>
+        <activeProfile>alwaysOn</activeProfile>
+    </activeProfiles>
+</settings>
+
