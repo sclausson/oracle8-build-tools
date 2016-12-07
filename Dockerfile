@@ -35,7 +35,6 @@ RUN apt-get update -qqy \
   && add-apt-repository -y ppa:git-core/ppa \
   && add-apt-repository ppa:webupd8team/java
 
-RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 
 #========================
 # Miscellaneous packages
